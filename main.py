@@ -34,6 +34,10 @@ def check_collision(pipes):
 
 
 pygame.init()
+pygame.display.set_caption("Flappy Bird")
+pygame.font.init()
+score_font = pygame.font.Font('assets/flappy-font.TTF', 30)
+score_text = score_font.render(str(0), False, (255, 255, 255))
 
 # game variables
 width = 400
@@ -43,6 +47,7 @@ bird_movement = 0
 floor_height = 50
 pipe_gap = 150
 game_over = False
+score = 0
 
 screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
@@ -86,10 +91,14 @@ while True:
             if event.key == pygame.K_SPACE and game_over:
                 bird_rect.center = (100, int(height / 2))
                 pipe_list.clear()
+                score = 0
+                score_text = score_font.render(str(score), False, (255, 255, 255))
                 game_over = False
 
-        if event.type == SPAWNPIPE:
+        if event.type == SPAWNPIPE and not game_over:
             pipe_list.extend(create_pipe())
+            score_text = score_font.render(str(score), False, (255, 255, 255))
+            score += 1
             if len(pipe_list) > 6:
                 pipe_list.popleft()
                 pipe_list.popleft()
@@ -111,6 +120,9 @@ while True:
 
     # Floor
     screen.blit(floor_surface, (0, height - floor_height))
+
+    # Score
+    screen.blit(score_text, (int(width / 2), int(height / 4)))
 
     pygame.display.update()
     clock.tick(120)
