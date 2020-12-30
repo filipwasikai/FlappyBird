@@ -133,7 +133,7 @@ bird_icon = pygame.image.load('assets/yellowbird-upflap.png').convert()
 pygame.display.set_icon(bird_icon)
 
 
-def game():
+def start_game():
     global game_over, pipe_list, score, high_score
     while True:
         for event in pygame.event.get():
@@ -181,4 +181,4 @@ def game():
         clock.tick(120)
 
 
-game()
+start_game()
