@@ -113,9 +113,6 @@ floor_surface = pygame.Surface((width, floor_height))
 floor_surface.fill((50, 50, 50))
 floor_rect = floor_surface.get_rect(bottomright=(width, height))
 
-# Bird
-
-
 # Pipe
 pipe_surface = pygame.image.load('assets/pipe-green-neg.png').convert()
 pipe_list = deque([], maxlen=6)
