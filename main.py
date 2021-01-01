@@ -41,16 +41,16 @@ def check_collision(pipes):
 
 def draw_score(game_over):
     if not game_over:
-        score_surface_text = score_font.render(str(max(0, score)), True, (255, 255, 255))
+        score_surface_text = score_font.render(str(max(0, score)), True, (255, 255, 0))
         score_rect = score_surface_text.get_rect(center=(int(width / 2), int(height / 4)))
         screen.blit(score_surface_text, score_rect)
 
     else:
-        score_surface_text = score_font.render(f'Score: {str(max(0, score))}', True, (255, 255, 255))
+        score_surface_text = score_font.render(f'Score: {str(max(0, score))}', True, (255, 255, 0))
         score_rect = score_surface_text.get_rect(center=(int(width / 2), int(height / 4)))
         screen.blit(score_surface_text, score_rect)
 
-        score_surface_text = score_font.render(f'High Score: {high_score}', True, (255, 255, 255))
+        score_surface_text = score_font.render(f'High Score: {high_score}', True, (255, 255, 0))
         score_rect = score_surface_text.get_rect(center=(int(width / 2), int(height / 2)))
         screen.blit(score_surface_text, score_rect)
 
