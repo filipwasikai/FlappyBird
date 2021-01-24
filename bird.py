@@ -10,7 +10,7 @@ class Bird:
         self.movement = 0
         self.gravity = 0.2
         self.surface = pygame.image.load('assets/yellowbird-upflap-neg.png').convert()
-        self.rect = self.surface.get_rect(center=(125, self.y_pos))
+        self.rect = self.surface.get_rect(center=(self.x_pos, self.y_pos))
 
     def jump(self):
         self.movement = 0

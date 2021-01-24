@@ -1,36 +1,38 @@
 import bird
+import pipe
 from collections import deque
 import random
 import sys
 import pygame
 
 
-def create_pipe():
-    random_pipe_pos = random.choice(pipe_height)
-    bottom_pipe = pipe_surface.get_rect(midtop=(width + 25, random_pipe_pos + int(pipe_gap / 2)))
-    top_pipe = pipe_surface.get_rect(midbottom=(width + 25, random_pipe_pos - int(pipe_gap / 2)))
-    return top_pipe, bottom_pipe
+def draw(surface, rect):
+    screen.blit(surface, rect)
+
+
+def create_2_pipes():
+    random_pipe_height = random.randint(int((height / 4) - (floor_height / 2)),
+                                        int((height * 3 / 4) - (floor_height / 2)))
+    bottom_pipe = pipe.Pipe(screen, "up", width + 25, random_pipe_height + int(pipe_gap / 2))
+    top_pipe = pipe.Pipe(screen, "down", width + 25, random_pipe_height - int(pipe_gap / 2))
+
+    return bottom_pipe, top_pipe
 
 
 def move_pipes(pipes):
     for pipe in pipes:
-        pipe.centerx -= 2
+        pipe.move()
     return pipes
 
 
 def draw_pipes(pipes):
     for pipe in pipes:
-        if pipe.bottom >= height:
-            screen.blit(pipe_surface, pipe)
-
-        else:
-            flip_pipe = pygame.transform.flip(pipe_surface, False, True)
-            screen.blit(flip_pipe, pipe)
+        pipe.draw()
 
 
 def check_collision(pipes):
     for pipe in pipes:
-        if bird.rect.colliderect(pipe):
+        if bird.rect.colliderect(pipe.rect):
             return True
 
     if bird.rect.top <= 0 or bird.rect.bottom >= height - floor_height:
@@ -113,14 +115,10 @@ floor_surface = pygame.Surface((width, floor_height))
 floor_surface.fill((50, 50, 50))
 floor_rect = floor_surface.get_rect(bottomright=(width, height))
 
-# Pipe
-pipe_surface = pygame.image.load('assets/pipe-green-neg.png').convert()
+# Pipes
 pipe_list = deque([], maxlen=6)
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE, 1200)
-pipe_height = [int((height / 3) - (floor_height / 2)),
-               int((height / 2) - (floor_height / 2)),
-               int((height * 2 / 3) - (floor_height / 2))]
 
 # Score
 pygame.font.init()
@@ -152,11 +150,11 @@ def start_game():
                     game_over = False
 
             if event.type == SPAWNPIPE and not game_over:
-                pipe_list.extend(create_pipe())
+                pipe_list.extend(create_2_pipes())
                 score += 1
 
         # Background
-        screen.blit(background_surface, background_rect)
+        draw(background_surface, background_rect)
 
         if not game_over:
             # Bird
@@ -170,13 +168,14 @@ def start_game():
         draw_pipes(pipe_list)
 
         # Floor
-        screen.blit(floor_surface, floor_rect)
+        draw(floor_surface, floor_rect)
 
         # Score
         draw_score(game_over)
         high_score = update_high_score(score, high_score)
         save_high_score(high_score)
 
+        # Window
         pygame.display.update()
         clock.tick(120)
 
