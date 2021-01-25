@@ -19,6 +19,7 @@ class Pipe:
 
     def move(self):
         self.rect.centerx -= 2
+        self.x_pos = self.rect.centerx
 
     def draw(self):
         self.screen.blit(self.surface, self.rect)

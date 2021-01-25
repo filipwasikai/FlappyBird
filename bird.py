@@ -19,6 +19,7 @@ class Bird:
     def fall(self):
         self.movement += self.gravity
         self.rect.centery += int(self.movement)
+        self.y_pos = self.rect.centery
 
     def draw(self):
         self.screen.blit(self.surface, self.rect)

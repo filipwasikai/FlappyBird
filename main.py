@@ -21,7 +21,12 @@ def create_2_pipes():
 
 def move_pipes(pipes):
     for pipe in pipes:
+        if pipe.x_pos < -50:
+            pipe_list.remove(pipe)
+
+    for pipe in pipes:
         pipe.move()
+
     return pipes
 
 
@@ -60,6 +65,7 @@ def draw_score(game_over):
 def update_high_score(score_local, high_score_local):
     if score_local > high_score_local:
         high_score_local = score_local
+
     return high_score_local
 
 
@@ -116,7 +122,7 @@ floor_surface.fill((50, 50, 50))
 floor_rect = floor_surface.get_rect(bottomright=(width, height))
 
 # Pipes
-pipe_list = deque([], maxlen=6)
+pipe_list = []
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE, 1200)
 
