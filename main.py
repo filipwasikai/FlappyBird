@@ -191,12 +191,12 @@ high_score = get_high_score()
 flapper = bird.Bird(screen, 125, height / 2, pygame, gravity, upswing)
 pipe_queue = []
 # Pipe spawn timer
+pygame.init()
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE, 1200)
 
 
 def start_game():
-    pygame.init()
     pygame.display.set_caption("Flappy Bird")
     bird_icon = pygame.image.load('assets/yellowbird-upflap.png').convert()
     pygame.display.set_icon(bird_icon)
