@@ -9,7 +9,8 @@ import pygame
 width = 600
 height = 800
 floor_height = 50
-pipe_gap = 200
+pipe_gap = 150
+gravity = 0.2
 game_over = False
 score = -1
 
@@ -109,7 +110,7 @@ def save_high_score(new_high_score):
 high_score = get_high_score()
 screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
-bird = bird.Bird(screen, 125, height / 2, pygame)
+bird = bird.Bird(screen, 125, height / 2, pygame, gravity)
 
 # Background
 background_surface = pygame.Surface((width, height))

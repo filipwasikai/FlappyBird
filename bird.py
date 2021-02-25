@@ -2,12 +2,12 @@
 
 class Bird:
 
-    def __init__(self, screen, x_pos, y_pos, pygame):
+    def __init__(self, screen, x_pos, y_pos, pygame, gravity):
         self.screen = screen
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.movement = 0
-        self.gravity = 0.2
+        self.gravity = gravity
         self.surface = pygame.image.load('assets/yellowbird-upflap-neg.png').convert()
         self.rect = self.surface.get_rect(center=(self.x_pos, self.y_pos))
 
