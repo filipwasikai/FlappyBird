@@ -99,7 +99,7 @@ def save_high_score(new_high_score):
 
 
 # game variables
-width = 400
+width = 600
 height = 800
 floor_height = 50
 pipe_gap = 150
