@@ -11,7 +11,7 @@ class Bird:
 
     def jump(self):
         self.movement = 0
-        self.movement -= 7
+        self.movement -= 6
 
     def fall(self):
         self.movement += self.gravity
