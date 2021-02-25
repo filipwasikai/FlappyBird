@@ -5,11 +5,11 @@ import sys
 import pygame
 
 
-# game variables
+# Game variables
 width = 600
 height = 800
 floor_height = 50
-pipe_gap = 150
+pipe_gap = 200
 game_over = False
 score = -1
 
@@ -190,9 +190,8 @@ def pygame_stuff():
 
 def start_game():
     while True:
-        for i in range(3):
-            pygame_stuff()
-            logic()
+        pygame_stuff()
+        logic()
         draw_all()
 
 
