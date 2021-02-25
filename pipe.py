@@ -1,5 +1,3 @@
-
-
 class Pipe:
 
     def __init__(self, screen, facing, x_pos, y_pos, pygame):

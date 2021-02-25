@@ -1,5 +1,3 @@
-
-
 class Bird:
 
     def __init__(self, screen, x_pos, y_pos, pygame, gravity):
