@@ -11,6 +11,7 @@ height = 800
 floor_height = 50
 pipe_gap = 150
 gravity = 0.2
+upswing = 6
 game_over = False
 score = -1
 
@@ -187,7 +188,7 @@ floor = create_floor()
 score_font = create_score_font()
 high_score = get_high_score()
 
-flapper = bird.Bird(screen, 125, height / 2, pygame, gravity)
+flapper = bird.Bird(screen, 125, height / 2, pygame, gravity, upswing)
 pipe_queue = []
 # Pipe spawn timer
 SPAWNPIPE = pygame.USEREVENT
