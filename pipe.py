@@ -1,9 +1,8 @@
-import pygame
 
 
 class Pipe:
 
-    def __init__(self, screen, facing, x_pos, y_pos):
+    def __init__(self, screen, facing, x_pos, y_pos, pygame):
         self.screen = screen
         self.facing = facing
         self.x_pos = x_pos
