@@ -1,9 +1,17 @@
 import bird
 import pipe
-from collections import deque
 import random
 import sys
 import pygame
+
+
+# game variables
+width = 600
+height = 800
+floor_height = 50
+pipe_gap = 150
+game_over = False
+score = -1
 
 
 def draw(surface, rect):
@@ -13,8 +21,8 @@ def draw(surface, rect):
 def create_2_pipes():
     random_pipe_height = random.randint(int((height / 4) - (floor_height / 2)),
                                         int((height * 3 / 4) - (floor_height / 2)))
-    bottom_pipe = pipe.Pipe(screen, "up", width + 25, random_pipe_height + int(pipe_gap / 2))
-    top_pipe = pipe.Pipe(screen, "down", width + 25, random_pipe_height - int(pipe_gap / 2))
+    bottom_pipe = pipe.Pipe(screen, "up", width + 25, random_pipe_height + int(pipe_gap / 2), pygame)
+    top_pipe = pipe.Pipe(screen, "down", width + 25, random_pipe_height - int(pipe_gap / 2), pygame)
 
     return bottom_pipe, top_pipe
 
@@ -98,18 +106,10 @@ def save_high_score(new_high_score):
         print("Unable to save the high score.")
 
 
-# game variables
-width = 600
-height = 800
-floor_height = 50
-pipe_gap = 150
-game_over = False
-score = -1
 high_score = get_high_score()
-
 screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
-bird = bird.Bird(screen, 125, height / 2)
+bird = bird.Bird(screen, 125, height / 2, pygame)
 
 # Background
 background_surface = pygame.Surface((width, height))
@@ -121,14 +121,11 @@ floor_surface = pygame.Surface((width, floor_height))
 floor_surface.fill((50, 50, 50))
 floor_rect = floor_surface.get_rect(bottomright=(width, height))
 
-# Pipes
-pipe_list = []
-SPAWNPIPE = pygame.USEREVENT
-pygame.time.set_timer(SPAWNPIPE, 1200)
 
 # Score
 pygame.font.init()
 score_font = pygame.font.Font('assets/flappy-font.TTF', 30)
+
 
 # Pygame
 pygame.init()
@@ -136,54 +133,68 @@ pygame.display.set_caption("Flappy Bird")
 bird_icon = pygame.image.load('assets/yellowbird-upflap.png').convert()
 pygame.display.set_icon(bird_icon)
 
+# Pipes
+pipe_list = []
+SPAWNPIPE = pygame.USEREVENT
+pygame.time.set_timer(SPAWNPIPE, 1200)
 
-def start_game():
-    global game_over, pipe_list, score, high_score
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    bird.jump()
-
-                if event.key == pygame.K_SPACE and game_over:
-                    bird.rect.center = (125, int(height / 2))
-                    pipe_list.clear()
-                    score = -1
-                    game_over = False
-
-            if event.type == SPAWNPIPE and not game_over:
-                pipe_list.extend(create_2_pipes())
-                score += 1
-
-        # Background
-        draw(background_surface, background_rect)
-
-        if not game_over:
-            # Bird
-            bird.fall()
-            bird.draw()
-            game_over = check_collision(pipe_list)
-
-            # Pipes
-            pipe_list = move_pipes(pipe_list)
-
-        draw_pipes(pipe_list)
-
-        # Floor
-        draw(floor_surface, floor_rect)
-
-        # Score
-        draw_score(game_over)
+def logic():
+    global game_over, pipe_list, high_score
+    if not game_over:
+        # Bird
+        game_over = check_collision(pipe_list)
+        bird.fall()
+        # Pipes
+        pipe_list = move_pipes(pipe_list)
+    else:
         high_score = update_high_score(score, high_score)
         save_high_score(high_score)
 
-        # Window
-        pygame.display.update()
-        clock.tick(120)
+
+def draw_all():
+    draw(background_surface, background_rect)
+    if not game_over:
+        bird.draw()
+        draw_pipes(pipe_list)
+    # Floor
+    draw(floor_surface, floor_rect)
+    # Score
+    draw_score(game_over)
+    # Window
+    pygame.display.update()
+    clock.tick(120)
 
 
-start_game()
+def pygame_stuff():
+    global score, game_over
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                bird.jump()
+
+            if event.key == pygame.K_SPACE and game_over:
+                bird.rect.center = (125, int(height / 2))
+                pipe_list.clear()
+                score = -1
+                game_over = False
+
+        if event.type == SPAWNPIPE and not game_over:
+            pipe_list.extend(create_2_pipes())
+            score += 1
+
+
+def start_game():
+    while True:
+        for i in range(3):
+            pygame_stuff()
+            logic()
+        draw_all()
+
+
+if __name__ == "__main__":
+    start_game()

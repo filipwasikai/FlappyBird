@@ -1,9 +1,8 @@
-import pygame
 
 
 class Bird:
 
-    def __init__(self, screen, x_pos, y_pos):
+    def __init__(self, screen, x_pos, y_pos, pygame):
         self.screen = screen
         self.x_pos = x_pos
         self.y_pos = y_pos
